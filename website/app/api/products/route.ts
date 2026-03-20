@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import Product from '@/models/Product';
 
 // GET all products
 export async function GET() {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Product = (await import('@/models/Product')).default;
+    
     await connectDB();
     const products = await Product.find({ active: true }).sort({ createdAt: -1 });
     return NextResponse.json(products);
@@ -20,6 +21,9 @@ export async function GET() {
 // POST create new product
 export async function POST(request: NextRequest) {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Product = (await import('@/models/Product')).default;
+    
     await connectDB();
     const body = await request.json();
 

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import Enquiry from '@/models/Enquiry';
 
 // GET all enquiries
 export async function GET() {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Enquiry = (await import('@/models/Enquiry')).default;
+    
     await connectDB();
     const enquiries = await Enquiry.find()
       .sort({ createdAt: -1 })
@@ -22,6 +23,9 @@ export async function GET() {
 // POST create new enquiry
 export async function POST(request: NextRequest) {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Enquiry = (await import('@/models/Enquiry')).default;
+    
     await connectDB();
     const body = await request.json();
 

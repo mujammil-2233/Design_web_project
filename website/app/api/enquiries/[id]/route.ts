@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import Enquiry from '@/models/Enquiry';
 
 // GET single enquiry
 export async function GET(
@@ -8,6 +6,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Enquiry = (await import('@/models/Enquiry')).default;
+    
     await connectDB();
     const { id } = await params;
     const enquiry = await Enquiry.findById(id).populate('productId');
@@ -35,6 +36,9 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Enquiry = (await import('@/models/Enquiry')).default;
+    
     await connectDB();
     const { id } = await params;
     const body = await request.json();
@@ -67,6 +71,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { connectDB } = await import('@/lib/db');
+    const Enquiry = (await import('@/models/Enquiry')).default;
+    
     await connectDB();
     const { id } = await params;
 
