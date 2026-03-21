@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight, Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Locale } from '@/i18n';
 
 interface Product {
@@ -31,7 +31,7 @@ const categoryIcons: Record<string, string> = {
   banners: '🚩',
 };
 
-export default function ServicesPage({ params }: ServicesPageProps) {
+function ServicesContent({ params }: ServicesPageProps) {
   const t = useTranslations();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
@@ -182,5 +182,13 @@ export default function ServicesPage({ params }: ServicesPageProps) {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function ServicesPage({ params }: ServicesPageProps) {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ServicesContent params={params} />
+    </Suspense>
   );
 }
