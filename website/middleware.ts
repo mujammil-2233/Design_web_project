@@ -1,28 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+import { NextRequest } from 'next/server';
+
+const intlMiddleware = createMiddleware({
+  locales: ['en', 'hi', 'mr'],
+  defaultLocale: 'en',
+  localePrefix: 'always',
+});
 
 export default function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const url = request.nextUrl.clone();
   
-  // Handle root path - redirect to English home
-  if (pathname === '/') {
-    return NextResponse.redirect(new URL('/en/home', request.url));
+  // Redirect / to /en/home
+  if (url.pathname === '/') {
+    url.pathname = '/en/home';
+    return Response.redirect(url);
   }
   
-  // Check if pathname starts with a valid locale
-  const locales = ['en', 'hi', 'mr'];
-  const pathLocale = pathname.split('/')[1];
-  
-  // If no locale prefix, redirect to English version
-  if (!locales.includes(pathLocale)) {
-    return NextResponse.redirect(new URL(`/en${pathname}`, request.url));
+  // Redirect /en, /hi, /mr to respective home pages
+  if (url.pathname === '/en' || url.pathname === '/hi' || url.pathname === '/mr') {
+    const locale = url.pathname.slice(1);
+    url.pathname = `/${locale}/home`;
+    return Response.redirect(url);
   }
   
-  // Set locale cookie
-  const response = NextResponse.next();
-  response.cookies.set('NEXT_LOCALE', pathLocale, { path: '/', sameSite: 'lax' });
-  return response;
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+  matcher: ['/', '/(hi|mr|en)/:path*'],
 };

@@ -2,12 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Eye, Download, Package, MessageSquare, X } from 'lucide-react';
-import { Locale } from '@/i18n';
-
-interface AdminPageProps {
-  params: Promise<{ locale: Locale }>;
-}
+import { Plus, Edit, Trash2, Download, Package, MessageSquare, X } from 'lucide-react';
 
 interface Product {
   _id: string;
@@ -43,9 +38,8 @@ interface Enquiry {
 
 type Tab = 'enquiries' | 'products';
 
-export default function AdminPage({ params }: AdminPageProps) {
+export default function AdminPage() {
   const t = useTranslations();
-  const locale = params.then(p => p.locale).catch(() => 'en' as Locale);
   
   const [activeTab, setActiveTab] = useState<Tab>('enquiries');
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);

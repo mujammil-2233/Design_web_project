@@ -1,5 +1,5 @@
+import '../globals.css';
 import { NextIntlClientProvider } from 'next-intl';
-import { getLocale, getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales, Locale } from '@/i18n';
 import Header from '@/components/Header';
@@ -22,17 +22,15 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   return (
-    <html lang={locale}>
-      <body className="min-h-screen flex flex-col antialiased">
-        <NextIntlClientProvider messages={messages}>
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer locale={locale as Locale} />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages} locale={locale}>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer locale={locale as Locale} />
+      </div>
+    </NextIntlClientProvider>
   );
 }
