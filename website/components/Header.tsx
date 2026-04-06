@@ -45,7 +45,7 @@ export default function Header() {
             <Link
               key={item.href}
               href={`/${currentLocale}${item.href}`}
-              className={pathname.includes(item.href) ? 'text-blue-600' : ''}
+              className={pathname.includes(item.href) ? 'active-nav' : ''}
             >
               {item.label}
             </Link>
@@ -57,10 +57,10 @@ export default function Header() {
               <button
                 key={locale}
                 onClick={() => changeLanguage(locale)}
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   locale === currentLocale
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-vp-blue text-white shadow-sm'
+                    : 'bg-vp-gray-100 text-vp-gray-700 hover:bg-vp-gray-200'
                 }`}
               >
                 {localeNames[locale]}
@@ -77,7 +77,8 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2"
+          className="md:hidden p-2 rounded-lg hover:bg-vp-gray-100 transition-colors"
+          aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -85,7 +86,7 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200 bg-white">
+        <div className="md:hidden border-t border-vp-gray-200 bg-white animate-fade-in">
           <div className="container py-4">
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
@@ -93,7 +94,11 @@ export default function Header() {
                   key={item.href}
                   href={`/${currentLocale}${item.href}`}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={pathname.includes(item.href) ? 'text-blue-600 font-medium' : ''}
+                  className={`px-4 py-2 rounded-lg transition-colors ${
+                    pathname.includes(item.href)
+                      ? 'bg-vp-blue-50 text-vp-blue font-semibold'
+                      : 'hover:bg-vp-gray-50'
+                  }`}
                 >
                   {item.label}
                 </Link>
@@ -102,15 +107,15 @@ export default function Header() {
               <Link
                 href={`/${currentLocale}/enquiry`}
                 onClick={() => setMobileMenuOpen(false)}
-                className="header-cta text-center"
+                className="header-cta text-center mx-4"
               >
                 {t('common.enquiry')}
               </Link>
 
               {/* Mobile Language Selector */}
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-xs text-gray-500 mb-3">Select Language / भाषा चुनें / भाषा निवडा</p>
-                <div className="flex gap-2 flex-wrap">
+              <div className="pt-4 border-t border-vp-gray-200 mt-2">
+                <p className="text-xs text-vp-gray-500 mb-3 font-medium">Select Language / भाषा चुनें / भाषा निवडा</p>
+                <div className="flex gap-2 flex-wrap px-4">
                   {locales.map((locale) => (
                     <button
                       key={locale}
@@ -118,10 +123,10 @@ export default function Header() {
                         changeLanguage(locale);
                         setMobileMenuOpen(false);
                       }}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                         locale === currentLocale
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-100 text-gray-700'
+                          ? 'bg-vp-blue text-white shadow-sm'
+                          : 'bg-vp-gray-100 text-vp-gray-700 hover:bg-vp-gray-200'
                       }`}
                     >
                       {localeNames[locale]}

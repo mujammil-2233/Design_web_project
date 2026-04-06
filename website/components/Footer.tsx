@@ -24,8 +24,8 @@ export default function Footer({ locale }: FooterProps) {
           {/* Brand */}
           <div>
             <div className="footer-brand">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-vp-blue to-vp-blue-light rounded-xl flex items-center justify-center shadow-sm">
                   <span className="text-white font-bold text-xl">D</span>
                 </div>
                 <span className="text-xl font-bold">Design Concept</span>
@@ -65,16 +65,16 @@ export default function Footer({ locale }: FooterProps) {
           <div>
             <h4 className="footer-heading">{t('footer.contact')}</h4>
             <ul className="footer-links space-y-3">
-              <li className="flex items-start gap-2">
-                <MapPin className="w-5 h-5 text-blue-500 mt-0.5" />
+              <li className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-vp-orange mt-0.5 flex-shrink-0" />
                 <span className="text-sm">Mumbai, Maharashtra, India</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-5 h-5 text-blue-500" />
+              <li className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-vp-orange flex-shrink-0" />
                 <span className="text-sm">+91 77098 31071</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-5 h-5 text-blue-500" />
+              <li className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-vp-orange flex-shrink-0" />
                 <span className="text-sm">info@designconcept.com</span>
               </li>
             </ul>
