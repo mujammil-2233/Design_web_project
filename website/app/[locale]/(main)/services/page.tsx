@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ServicesPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const categories = [
     { id: 'all', label: 'All Services' },
@@ -28,9 +29,14 @@ export default function ServicesPage() {
     { id: 7, category: 'banners', title: 'Banners', description: 'Promotional banners and branchers' },
   ];
 
-  const filteredServices = selectedCategory === 'all'
-    ? services
-    : services.filter(s => s.category === selectedCategory);
+  // Filter by both category and search query
+  const filteredServices = services.filter(service => {
+    const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
+    const matchesSearch = searchQuery === '' || 
+      service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      service.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="bg-white min-h-screen">
@@ -45,6 +51,21 @@ export default function ServicesPage() {
       {/* Filter Bar */}
       <div className="filter-bar">
         <div className="container">
+          {/* Search Bar */}
+          <div className="mb-4">
+            <div className="relative max-w-xl mx-auto">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-vp-gray-400" />
+              <input
+                type="text"
+                placeholder="Search services..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="form-input pl-12 w-full"
+              />
+            </div>
+          </div>
+
+          {/* Category Filters */}
           <div className="filter-list">
             {categories.map((cat) => (
               <button
@@ -62,21 +83,33 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="section">
         <div className="container">
-          <div className="grid grid-3">
-            {filteredServices.map((service) => (
-              <Link
-                key={service.id}
-                href="/en/enquiry"
-                className="card"
+          {filteredServices.length > 0 ? (
+            <div className="grid grid-3">
+              {filteredServices.map((service) => (
+                <Link
+                  key={service.id}
+                  href="/en/enquiry"
+                  className="card"
+                >
+                  <h3 className="card-title">{service.title}</h3>
+                  <p className="card-description">{service.description}</p>
+                  <span className="card-link">
+                    Request Quote <ArrowRight className="w-4 h-4" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-vp-gray-500 text-lg">No services found matching your criteria</p>
+              <button 
+                onClick={() => { setSelectedCategory('all'); setSearchQuery(''); }}
+                className="mt-4 text-vp-blue font-semibold hover:underline"
               >
-                <h3 className="card-title">{service.title}</h3>
-                <p className="card-description">{service.description}</p>
-                <span className="card-link">
-                  Request Quote <ArrowRight className="w-4 h-4" />
-                </span>
-              </Link>
-            ))}
-          </div>
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>
